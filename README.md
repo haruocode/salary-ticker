@@ -41,7 +41,7 @@ Cloudflare Workers（静的アセット）にデプロイしています。
 pnpm run deploy    # ビルドして wrangler deploy
 ```
 
-公開 URL: https://salary-ticker.takaron0930.workers.dev
+公開 URL: https://salary-ticker.haruocode.workers.dev
 
 ## 技術スタック
 
