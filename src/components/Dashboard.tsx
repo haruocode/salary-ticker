@@ -8,6 +8,7 @@ import {
 } from "../lib/calc";
 import { formatDuration, formatEarnings, formatYen, formatYen2, formatYen4 } from "../lib/format";
 import type { Settings } from "../lib/settings";
+import { SlotNumber } from "./SlotNumber";
 
 interface Props {
   settings: Settings;
@@ -30,7 +31,7 @@ export function Dashboard({ settings, onEdit }: Props) {
           {workingDay ? "今日ここまでの獲得額" : "今日はお休み"}
         </p>
         <p className="font-mono text-6xl font-bold tabular-nums text-emerald-400 sm:text-7xl">
-          {formatEarnings(earnings)}
+          <SlotNumber value={formatEarnings(earnings)} />
         </p>
       </section>
 
