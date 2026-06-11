@@ -33,6 +33,16 @@ pnpm lint          # oxlint
 pnpm format        # oxfmt
 ```
 
+## デプロイ
+
+Cloudflare Workers（静的アセット）にデプロイしています。
+
+```bash
+pnpm run deploy    # ビルドして wrangler deploy
+```
+
+公開 URL: https://salary-ticker.takaron0930.workers.dev
+
 ## 技術スタック
 
 - React + TypeScript + Vite
