@@ -12,6 +12,8 @@ Salary Ticker
 - 今月の稼働時間
 - 出勤時刻（定時）
 - 退勤時刻（定時）
+- 休憩開始時刻
+- 休憩終了時刻
 
 アプリは現在時刻を元に、その日の推定収益をリアルタイムに計算して表示する。
 
@@ -68,15 +70,25 @@ hourlyRate = monthlySalary / monthlyWorkingHours
 ## Daily Working Hours
 
 ```text
+breakDuration =
+  breakEndTime - breakStartTime
+```
+
+```text
 dailyWorkingHours =
-  endTime - startTime
+  (endTime - startTime) - breakDuration
 ```
 
 ## Current Earnings
 
 ```text
+elapsedBreakTime =
+  [breakStartTime, breakEndTime] と [startTime, currentTime] の重なり時間
+```
+
+```text
 elapsedTime =
-  currentTime - startTime
+  (currentTime - startTime) - elapsedBreakTime
 ```
 
 ```text
@@ -86,7 +98,15 @@ currentEarnings =
 
 勤務開始前は 0 円。
 
+休憩中はカウントが停止する（獲得額は増えない）。
+
 勤務終了後は当日上限金額で固定する。
+
+## Working Days
+
+土日は勤務日としない。
+
+土日にページを開いた場合、獲得額は ¥0 のまま計測しない。
 
 ---
 
@@ -100,6 +120,8 @@ currentEarnings =
 - 今月の稼働時間
 - 出勤時刻
 - 退勤時刻
+- 休憩開始時刻
+- 休憩終了時刻
 
 設定は localStorage に保存する。
 
@@ -239,6 +261,26 @@ currentEarnings =
 
 ---
 
+# Development
+
+```bash
+pnpm dev          # 開発サーバー起動
+pnpm build        # 型チェック + プロダクションビルド
+pnpm test         # ユニットテスト（Vitest）
+pnpm lint         # oxlint
+pnpm format       # oxfmt
+```
+
+## Structure
+
+- `src/lib/` — 計算ロジック・設定の永続化（純粋関数。テスト対象）
+- `src/hooks/` — React フック
+- `src/components/` — UI コンポーネント
+
+計算ロジックは `src/lib/calc.ts` に集約し、UI から分離する。
+
+---
+
 # Non Goals
 
 以下は MVP では実装しない。
@@ -249,5 +291,7 @@ currentEarnings =
 - SNS機能
 - 広告
 - 課金
+- 夜勤対応（日をまたぐ勤務。endTime は startTime より後である前提）
+- 祝日カレンダー対応（土日のみを非勤務日とする）
 
 まずは単体アプリとして完成させることを優先する。
